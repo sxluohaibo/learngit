@@ -1,0 +1,80 @@
+//
+//  HACommonTableViewController.m
+//  安心汽车
+//
+//  Created by 罗海波 on 15/4/13.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//  常规扣分情况
+
+#import "HACommonTableViewController.h"
+
+#import "HACommonCell.h"
+@interface HACommonTableViewController ()
+
+@property(nonatomic,strong) NSArray * commonAction;
+
+@end
+
+@implementation HACommonTableViewController
+
+
+//加载显示数据
+
+- (NSArray *)commonAction
+{
+    if (_commonAction == nil) {
+        
+        _commonAction = [NSArray array];
+        
+        
+        NSMutableArray *carray = [NSMutableArray array];
+        
+        for (int index = 0; index < 6; index ++) {
+            
+            NSString * name = [NSString stringWithFormat:@"rule%d.jpg",index+1];
+            [carray addObject:name];
+        }
+        
+       
+        _commonAction = carray;
+
+    }
+    
+    return _commonAction;
+}
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    self.title = @"常规扣分情况";
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//    self.tableView.backgroundColor = [UIColor grayColor];//设置背景
+
+}
+
+
+#pragma mark - Table view data source
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+
+    return self.commonAction.count;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    
+    HACommonCell * cell = [[HACommonCell alloc] init];
+    
+    NSString * dutyImage = self.commonAction[indexPath.row];
+    cell.name = dutyImage;
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 175;
+}
+@end

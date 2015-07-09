@@ -1,0 +1,147 @@
+//
+//  HADetailMessageViewController.m
+//  安心汽车
+//
+//  Created by 罗海波 on 15/4/29.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//  咨询详情界面
+
+#import "HADetailMessageViewController.h"
+#import "HA4SInfoTool.h"
+#import "HADetailResult.h"
+
+
+#define margin 5
+#define  iconViewSize 80
+#define  ContentSize 11  //咨询详情
+#define titleSize 12  //咨询详情标题字体大小
+@interface HADetailMessageViewController ()
+
+/**图像*/
+@property(nonatomic,weak)UIImageView * iconView;
+
+/**图像*/
+@property(nonatomic,weak)UILabel * newtitle;
+
+/**图像*/
+@property(nonatomic,weak)UILabel * detailtitle;
+
+
+/**图像*/
+@property(nonatomic,weak)UILabel * timeTitle;
+
+
+/**质询详情*/
+@property(nonatomic,strong)NSArray * message;
+
+
+/**质询详情*/
+@property(nonatomic,strong)HADetailResult * result;
+@end
+
+@implementation HADetailMessageViewController
+
+
+
+
++ (HADetailMessageViewController *) Message:(int)newId
+{
+    HADetailMessageViewController * vc = [[self alloc] init];
+    vc.newId = newId;
+    return vc;
+}
+
+
+
+- (void)viewDidLoad {
+    
+    [super viewDidLoad];
+    
+    
+    
+    
+    [HA4SInfoTool store4SDetailMessage:self.newId success:^(HADetailResult * result) {
+        
+        [MBProgressHUD showSuccess:@"加载成功"];
+        
+        self.result = result;
+        
+        //添加详情界面的控件
+        [self setupNew];
+        
+       
+        
+    } failure:^(NSError *error) {
+        
+        NSLog(@"error:%@",error);
+    }];
+}
+
+
+/**
+ *  添加详情界面的控件
+ */
+- (void)setupNew
+{
+    
+    self.title = @"咨询详情";
+    UIView * newView = [[UIView alloc] init];
+    CGFloat newViewX = 0;
+    CGFloat newViewY = 0;
+    CGFloat newViewW= ScreenWidth;
+    CGFloat newViewH= ScreenHeight;
+    newView.frame = (CGRect){newViewX,newViewY,newViewW,newViewH};
+    [self.view addSubview:newView];
+    
+    //咨询头像
+    UIImageView * iconView = [[UIImageView alloc] init];
+    iconView.backgroundColor = [UIColor redColor];
+    iconView.image = [UIImage imageNamed:@"jtwz_icon"];
+    iconView.contentMode = UIViewContentModeScaleAspectFit;
+    CGFloat iconViewX = margin;
+    CGFloat iconViewY = margin;
+    CGFloat iconViewWH= iconViewSize;
+    iconView.frame = (CGRect){iconViewX,iconViewY,iconViewWH,iconViewWH};
+    self.iconView = iconView;
+    [newView addSubview:iconView];
+    
+    //咨询标题
+    UILabel * newtitle = [[UILabel alloc] init];
+    newtitle.backgroundColor = [UIColor greenColor];
+    [newtitle setFont:[UIFont systemFontOfSize:titleSize]];
+    CGFloat newtitleX = CGRectGetMaxX(self.iconView.frame) + margin;
+    CGFloat newtitleY = margin;
+    CGFloat newtitleW = ScreenWidth - iconViewWH - 3 * margin;
+    CGFloat newtitleH = 20;
+    newtitle.text = self.result.title;
+    newtitle.frame = (CGRect){newtitleX,newtitleY,newtitleW,newtitleH};
+    [newView addSubview:newtitle];
+    
+    
+    //咨询详情
+    UILabel * detailtitle = [[UILabel alloc] init];
+    detailtitle.backgroundColor = [UIColor blueColor];
+    detailtitle.numberOfLines = 0;
+    CGFloat detailtitleX = newtitleX;
+    CGFloat detailtitleY = newtitleY + newtitleH + margin;
+    CGFloat MAXW = newtitleW;
+    CGSize detailtitleSize= [self.result.content sizeWithFont:[UIFont systemFontOfSize:ContentSize] constrainedToSize:CGSizeMake(MAXW, MAXFLOAT)];
+    detailtitle.text = self.result.content;
+    detailtitle.frame = (CGRect){{detailtitleX,detailtitleY},detailtitleSize};
+    [newView addSubview:detailtitle];
+    
+    
+    //时间
+    UILabel * timeTitle = [[UILabel alloc] init];
+    CGFloat timeTitleX = detailtitleX;
+    CGFloat timeTitleY =  detailtitleY + detailtitleSize.height + margin;
+    CGFloat timeTitleW = newtitleW;
+    CGFloat timeTitleH = 20;
+    timeTitle.text = self.result.updateTime;
+    timeTitle.frame = (CGRect){timeTitleX,timeTitleY,timeTitleW,timeTitleH};
+    [newView addSubview:timeTitle];
+    
+    
+}
+
+@end

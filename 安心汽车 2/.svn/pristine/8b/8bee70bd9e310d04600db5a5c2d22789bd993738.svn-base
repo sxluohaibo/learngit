@@ -1,0 +1,65 @@
+<html>
+
+<div id="container" class="clearfix">
+	<div id="subpage_content">
+  
+					<style><!--
+.clearfix { clear: both;} .service-flow { width: 100%; background-color: #f4f4f4; } .service-flow tr{ height: 26px;} .service-flow td { border-top: 1px solid #ccc;  border-left: 1px solid #ccc; color: #575757; font-size: 12px; line-height: 22px; padding: 5px 15px; background-color: #f4f4f4; } .service-flow td.align-left { text-align: center; vertical-align: middle; } .service-flow .title{ background:url('http://www.anxinche.com/wp-content/uploads/2013/10/tbg.jpg') repeat-x; height: 34px; line-height: 35px; font-size: 14px; letter-spacing: 2px; font-weight: bold;  color: #fff; text-align: center; } .service-flow td.right-txt { letter-spacing: 1px;}
+--></style>
+<table class="service-flow" border="1" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td class="align-left" style="width: 60px; padding: 0;">
+<div class="title">步骤</div>
+</td>
+<td style="padding: 0; border-left: 1px solid #fff;">
+<div class="title">流程内容</div>
+</td>
+</tr>
+<tr>
+<td class="align-left">一</td>
+<td class="right-txt">呼叫中心接到客户预约电话</td>
+</tr>
+<tr>
+<td class="align-left" valign="middle">二</td>
+<td class="right-txt">呼叫人员做好预约记录，详细记录客户信息，预约时段，预约项目，提醒客户，我们会在预约时间的前一天与客户确认，感谢客户致电后结束通话</td>
+</tr>
+<tr>
+<td class="align-left" valign="middle">三</td>
+<td class="right-txt">呼叫人员在预约服务系统中登记详细信息并安排给服务人员，在日历中做好登记</td>
+</tr>
+<tr>
+<td class="align-left" valign="middle">四</td>
+<td class="right-txt">在预约日前一天呼叫人员与客户联系并发送取车人验证信息，取车人发送确认短信</td>
+</tr>
+<tr>
+<td class="align-left" valign="middle">五</td>
+<td class="right-txt">取车人按约定时间到达约定地点，告知呼叫人员记录，取车人致电客户</td>
+</tr>
+<tr>
+<td class="align-left" valign="middle">六</td>
+<td class="right-txt">见到客户后主动表明身份，报出验证码请客户确认，出示身份证，驾驶证，告知客户权益，说明支付方式，与客户一起验车并拍照留存，填写交接单，交接完后告知呼叫中心，呼叫人员记录</td>
+</tr>
+<tr>
+<td class="align-left" valign="middle">七</td>
+<td class="right-txt">车辆送到附近4S店后，取车人告知呼叫中心，呼叫中心记录，如果车辆发生服务合同保障范围之外的费用，致电客户确认</td>
+</tr>
+<tr>
+<td class="align-left" valign="middle">八</td>
+<td class="right-txt">保养/维修完成后，留好费用清单及客户需承担费用的发票，离开4S店时告知呼叫人员，呼叫人员记录</td>
+</tr>
+<tr>
+<td class="align-left" valign="middle">九</td>
+<td class="right-txt">将车辆送到客户指定地点给指定人，填写交接单请客户确认签字，交接完成后告知呼叫中心，呼叫人员记录</td>
+</tr>
+<tr>
+<td class="align-left" valign="middle">十</td>
+<td class="right-txt">取车人带回保养/维修项目费用清单复印件及交接单</td>
+</tr>
+<tr>
+<td class="align-left" valign="middle">十一</td>
+<td class="right-txt">行政人员归档</td>
+</tr>
+</tbody>
+</table>
+</html>

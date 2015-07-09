@@ -1,0 +1,133 @@
+//
+//  PrefixHeader.pch
+//  YunWei
+//
+//  Created by Kjov on 15-3-3.
+//  Copyright (c) 2015年 孔伟. All rights reserved.
+//
+
+//#ifndef YunWei_PrefixHeader_pch
+//#define YunWei_PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+
+#import <Availability.h>
+
+#ifndef __IPHONE_3_0
+#warning "This project uses features only available in iOS SDK 3.0 and later."
+#endif
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import "CCQGlobalUICommon.h"
+#import "FMDatabase.h"
+#import "MKNetworkEngine.h"
+#import "MKNetworkKit.h"
+#import "MKNetworkOperation.h"
+#import "XMLReader.h"
+#import "HAUITabBarController.h"
+#import "JSONKit.h"
+#import "HAManger.h"
+#import "UIView+KalAdditions.h"
+#import "MBProgressHUD+MJ.h"
+#import "UIView+Extension.h"
+#import "UIBarButtonItem+Extension.h"
+#import "HABottomView.h"
+#import "HACenterView.h"
+#import "HAButton.h"
+#import "HAMainViewController.h"
+#import "HACityView.h"
+#import "HACityInfoViewController.h"
+#import "HAOilPiceView.h"
+#import "HAViolationViewController.h"
+#import "HAAddCarViewController.h"
+#import "HAWindowViewController.h"//主控制器
+
+#import "HANavigationController.h"
+#import "HACityViewController.h"
+#import "HAUserDefalutTool.h"
+#import "GprsGetCity.h"
+#import "HAChoiceVioViewController.h"
+#import "HAVSecondViewController.h"
+#import "HAAddCarImageView.h"
+#import "HAViolationListViewController.h"
+#import "MJExtension.h"
+#import "HAViolationCitysParameResult.h"
+#import "HAViolationProvicePrameResult.h"
+#import "HAProviceCellTableViewCell.h"
+#import "HANumberViewController.h"
+#import "HAXIanXingViewController.h"
+#import "UIImage+Extension.h"
+#import "HAViolationView.h"
+#import "HAVersionModel.h"
+#import "TableName.h"
+#import "YTKKeyValueStore.h"
+#import "HASaveInfoByFMDB.h"
+#import "HAProvinceModel.h"
+#import "HAClassifyViewController.h"
+#import "HACollectViewController.h"
+#import "HAMineViewController.h"
+#import "PullingRefreshTableView.h"
+#import "HABaseAnxin.h"
+#import "HABeancity.h"
+#import "HABeanprovince.h"
+#import "HAAppDelegate.h"
+#import "HAListButton.h"
+#import "HAMaintenanceViewController.h"
+#import "HAMaintenanceView.h"
+#import "HAMaintenanceCityViewController.h"
+#import "HAMtenaCityListViewController.h"
+#import "HALoginViewController.h"
+#import "HALoveCarViewController.h"
+#import "HABrandSelectViewController.h"
+#import "HACarClass.h"
+#import "HAMatenanceDetailViewController.h"
+#import "HAAppointmentListViewController.h"
+#import "IIViewDeckController.h"
+#import "IIWrapController.h"
+#import "MyNavigationViewController.h"
+#import "MyNavWithoutPanController.h"
+#import "HARightMenuViewController.h"
+#import "HALeftMenuViewController.h"
+#import "MJSettingViewController.h"
+#import "HADealAccidentController.h"
+#import "HAClaimsViewController.h"
+#import "HACarResult.h"
+#import "HACarInfo.h"
+#import "HAAppointmentDetailsViewController.h"
+#import "HANewAppointDetailViewController.h"//最新的预约详情（1条）
+#import "HACarInfoResult.h" //最新预约信息返回数据的模型
+#import "HAUserInputModel.h"//用户违章查询输入车辆数据的模型
+#import "HABeanUserInput.h"//数据库的操作
+#import "HATopView.h"//顶部视图
+#import "HAMessageBoxViewController.h"//消息盒子
+#import "HAFlipViewController.h"//翻转
+#import "HA4SShopConsultingViewController.h"//预约列表
+#import "HADetailMessageViewController.h"
+
+#import <TencentOpenAPI/QQApiInterface.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+#import "WXApi.h"
+#import "WeiboSDK.h"
+#import <ShareSDK/ShareSDK.h>
+
+#import "HAMapViewController.h"//地图
+#import "HACommonViewController.h"//常用工具
+#import "HACarHelpViewController.h"//车辆救援
+#import "HACommonTableViewController.h"//扣分
+#import "HAKouFenActionViewController.h"
+#import "HAPenaltyPointsViewController.h"
+#import "HAClaimsViewController.h"//理赔流程
+
+#endif
+
+#ifdef CCQ
+#define LOG(...) NSLog(__VA_ARGS__);
+#define LOG_METHOD NSLog(@&quot;%s&quot;, __func__);
+#else
+#define LOG(...);
+
+#endif

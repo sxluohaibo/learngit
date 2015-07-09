@@ -1,0 +1,134 @@
+//
+//  HADetailMessageViewController.m
+//  安心汽车
+//
+//  Created by 罗海波 on 15/4/29.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//  咨询详情界面
+
+#import "HADetailMessageViewController.h"
+#import "HA4SInfoTool.h"
+#import "HADetailResult.h"
+
+
+#define margin 5
+#define  iconViewSize 80
+
+@interface HADetailMessageViewController ()
+
+/**图像*/
+@property(nonatomic,weak)UIImageView * iconView;
+
+/**图像*/
+@property(nonatomic,weak)UILabel * newtitle;
+
+/**图像*/
+@property(nonatomic,weak)UILabel * detailtitle;
+
+
+/**图像*/
+@property(nonatomic,weak)UILabel * timeTitle;
+
+
+/**质询详情*/
+@property(nonatomic,strong)NSArray * message;
+
+
+/**质询详情*/
+@property(nonatomic,strong)HADetailResult * result;
+@end
+
+@implementation HADetailMessageViewController
+
+
+
+
++ (HADetailMessageViewController *) Message:(int)newId
+{
+    HADetailMessageViewController * vc = [[self alloc] init];
+    vc.newId = newId;
+    return vc;
+}
+
+
+
+- (void)viewDidLoad {
+    
+    [super viewDidLoad];
+    
+    
+    
+    
+    [HA4SInfoTool store4SDetailMessage:self.newId success:^(HADetailResult * result) {
+        
+        [MBProgressHUD showSuccess:@"加载成功"];
+        
+        self.result = result;
+        
+        //添加详情界面的控件
+        [self setupNew];
+        
+       
+        
+    } failure:^(NSError *error) {
+        
+        NSLog(@"error:%@",error);
+    }];
+}
+
+
+/**
+ *  添加详情界面的控件
+ */
+- (void)setupNew
+{
+    
+    self.title = @"咨询详情";
+    UIView * newView = [[UIView alloc] init];
+    CGFloat newViewX = 0;
+    CGFloat newViewY = 0;
+    CGFloat newViewWH= 80;
+    
+    
+    //咨询头像
+    UIImageView * iconView = [[UIImageView alloc] init];
+    CGFloat iconViewX = margin;
+    CGFloat iconViewY = margin;
+    CGFloat iconViewWH= iconViewSize;
+    iconView.frame = (CGRect){iconViewX,iconViewY,iconViewWH,iconViewWH};
+    self.iconView = iconView;
+    [newView addSubview:iconView];
+    
+    //咨询标题
+    UILabel * newtitle = [[UILabel alloc] init];
+    CGFloat newtitleX = CGRectGetMaxX(self.iconView.frame) + margin;
+    CGFloat newtitleY = margin;
+    CGFloat newtitleW = ScreenWidth - iconViewWH - 3 * margin;
+    CGFloat newtitleH = 30;
+    newtitle.frame = (CGRect){newtitleX,newtitleY,newtitleW,newtitleH};
+    [newView addSubview:newtitle];
+    
+    
+    //咨询详情
+    UILabel * detailtitle = [[UILabel alloc] init];
+    CGFloat detailtitleX = 0;
+    CGFloat detailtitleY = 0;
+    CGFloat detailtitleW = 80;
+    CGFloat detailtitleH = 80;
+    detailtitle.frame = (CGRect){detailtitleX,detailtitleY,detailtitleW,detailtitleH};
+    [newView addSubview:detailtitle];
+    
+    
+    //咨询详情
+    UILabel * timeTitle = [[UILabel alloc] init];
+    CGFloat timeTitleX = 0;
+    CGFloat timeTitleY = 0;
+    CGFloat timeTitleW = 80;
+    CGFloat timeTitleH = 80;
+    timeTitle.frame = (CGRect){timeTitleX,timeTitleY,timeTitleW,timeTitleH};
+    [newView addSubview:timeTitle];
+    
+    
+}
+
+@end

@@ -1,0 +1,14 @@
+//
+//  HA4SShopConsultingViewController.h
+//  安心汽车
+//
+//  Created by 罗海波 on 15/4/27.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//  汽车资讯
+
+#import <UIKit/UIKit.h>
+
+@interface HA4SShopConsultingViewController : UITableViewController
+
+@property(nonatomic,strong)NSString *proCode;
+@end

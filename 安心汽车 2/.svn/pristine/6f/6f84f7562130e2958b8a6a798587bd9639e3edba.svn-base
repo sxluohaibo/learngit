@@ -1,0 +1,153 @@
+//
+//  MJSettingViewController.m
+//  00-ItcastLottery
+//
+//  Created by apple on 14-4-17.
+//  Copyright (c) 2014年 itcast. All rights reserved.
+//
+
+#import "MJSettingViewController.h"
+#import "MJSettingArrowItem.h"
+
+#import "MJSettingGroup.h"
+#import "MJSettingItem.h"
+#import "MJSettingCell.h"
+#import "MBProgressHUD+MJ.h"
+
+
+@interface MJSettingViewController ()
+
+
+@property(nonatomic,strong)NSMutableArray * data;
+
+
+@end
+
+@implementation MJSettingViewController
+
+
+- (NSArray *)data
+{
+    if (_data == nil) {
+        
+        _data = [NSMutableArray array];
+    }
+    
+    return _data;
+}
+
+/**
+ *  第1组数据
+ */
+- (void)setupGroup3
+{
+
+    
+    MJSettingItem *shareToFriend = [MJSettingArrowItem itemWithIcon:@"IDInfo" title:@"分享给朋友" destVcClass:nil];
+    MJSettingItem *touchUs = [MJSettingArrowItem itemWithIcon:@"IDInfo" title:@"联系我们"  destVcClass:nil];
+  
+    MJSettingGroup *group = [[MJSettingGroup alloc] init];
+    group.items = @[shareToFriend, touchUs];
+    [self.data addObject:group];
+}
+
+/**
+ *  第0组数据
+ */
+- (void)setupGroup0
+{
+    MJSettingItem *personCenter = [MJSettingArrowItem itemWithIcon:@"IDInfo" title:@"个人中心" detail:@"未登入" destVcClass:nil];  //个人中心
+    MJSettingGroup *group = [[MJSettingGroup alloc] init];
+    group.items = @[personCenter];
+    [self.data addObject:group];
+}
+
+
+/**
+ *  第0组数据
+ */
+- (void)setupGroup1
+{
+    MJSettingItem *carManage = [MJSettingArrowItem itemWithIcon:@"IDInfo" title:@"车辆管理" destVcClass:nil];
+    MJSettingItem *mineCollect = [MJSettingArrowItem itemWithIcon:@"IDInfo" title:@"我的收藏"];
+    
+    
+    MJSettingGroup *group = [[MJSettingGroup alloc] init];
+    group.items = @[carManage, mineCollect];
+    [self.data addObject:group];
+}
+
+/**
+ *  第0组数据
+ */
+- (void)setupGroup2
+{
+    MJSettingItem *encourageUs = [MJSettingArrowItem itemWithIcon:@"IDInfo" title:@"鼓励我们" destVcClass:nil];
+    MJSettingItem *opinionFeedback = [MJSettingArrowItem itemWithIcon:@"IDInfo" title:@"意见反馈" destVcClass:nil];
+    MJSettingGroup *group = [[MJSettingGroup alloc] init];
+    group.items = @[encourageUs, opinionFeedback];
+    [self.data addObject:group];
+}
+
+- (instancetype)init
+{
+    return [super initWithStyle:UITableViewStyleGrouped];
+}
+
+
+- (instancetype)initWithStyle:(UITableViewStyle)style
+{
+    return [super initWithStyle:UITableViewStyleGrouped];
+}
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    // 1.标题
+    self.title = @"设置";
+    
+   
+    // 2.添加数据
+    [self setupGroup0];
+    [self setupGroup1];
+    [self setupGroup2];
+    [self setupGroup3];
+}
+
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+
+    
+    return self.data.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+
+    MJSettingGroup *group = self.data[section];
+    return group.items.count;
+}
+
+
+
+ - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+     
+ 
+     MJSettingCell * cell = [MJSettingCell cellWithTableView:tableView];
+     MJSettingGroup *group = self.data[indexPath.section];  //获取某一行
+     cell.item =  group.items[indexPath.row];
+     
+     return cell;
+ }
+
+#pragma mark - Table view delegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+   
+}
+@end

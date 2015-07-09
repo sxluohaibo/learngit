@@ -1,0 +1,72 @@
+//
+//  HAMtenaCityListViewController.m
+//  安心汽车
+//
+//  Created by kongw on 15/4/15.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//
+
+#import "HAMtenaCityListViewController.h"
+
+@interface HAMtenaCityListViewController ()
+
+@end
+
+@implementation HAMtenaCityListViewController
+@synthesize cityID;
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+    mtenCityListArr = [[NSArray alloc] init];
+    mtenaCityListTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-TABBAR_TAP_BUTTON_WIDTH)];
+    mtenaCityListTableView.backgroundColor = [UIColor clearColor];
+    mtenaCityListTableView.delegate = self;
+    mtenaCityListTableView.dataSource = self;
+    [self.view addSubview:mtenaCityListTableView];
+    
+    //http://file.ywsoftware.com:9090/T100040/appointment/showPartnerCompany?cityId=110100
+    NSString *downName = [NSString stringWithFormat:@"/T100040/appointment/showPartnerCompany?cityId=%@",cityID];
+    MKNetworkOperation *op = [ApplicationDelegate.engine operationWithPath:downName params:nil httpMethod:@"GET" ssl:NO];
+    [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        mtenCityListArr = [completedOperation.responseString objectFromJSONString];
+        [mtenaCityListTableView reloadData];
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        NSLog(@"失败");
+    }];
+    [ApplicationDelegate.engine enqueueOperation:op];
+}
+
+#pragma mark - UITableViewDataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return mtenCityListArr.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *ID = @"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+        NSDictionary *cityListDic = [mtenCityListArr objectAtIndex:indexPath.row];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.text = [cityListDic objectForKey:@"partnerName"];
+    }
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [[NSNotificationCenter defaultCenter] postNotificationName:MainTenanceCarNameChoice object:[mtenCityListArr objectAtIndex:indexPath.row]];
+    [self dismissViewControllerAnimated:YES completion:^{
+        //NSLog(@"返回的数据 ＝＝ %@",[mtenCityListArr objectAtIndex:indexPath.row]);
+    }];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+@end

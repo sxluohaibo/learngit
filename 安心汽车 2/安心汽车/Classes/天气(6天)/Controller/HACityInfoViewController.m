@@ -1,0 +1,105 @@
+//
+//  HACityInfoViewController.m
+//  安心汽车
+//
+//  Created by kongw on 15/3/20.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//
+
+#import "HACityInfoViewController.h"
+
+@interface HACityInfoViewController (){
+    NSArray *cityWeatherArr;
+}
+
+@end
+
+@implementation HACityInfoViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.navigationItem.title = @"天气";
+}
+
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return cityWeatherArr.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CELL"];
+    if (cell == nil){
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CELL"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        NSDictionary *future = [cityWeatherArr objectAtIndex:indexPath.row];
+        cell.backgroundColor = RGBACOLOR(158,205,232,1);
+        cell.userInteractionEnabled = NO;
+        
+        //时间
+        UILabel *time = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, 100, 30)];
+        time.textColor = [UIColor blackColor];
+        time.textAlignment = NSTextAlignmentCenter;
+        time.text = [future objectForKey:@"date"];
+        time.backgroundColor = [UIColor clearColor];
+        [cell addSubview:time];
+        
+        //week
+        UILabel *week = [[UILabel alloc] initWithFrame:CGRectMake(20, 55, 100, 30)];
+        week.textColor = [UIColor blackColor];
+        week.textAlignment = NSTextAlignmentCenter;
+        week.text = [future objectForKey:@"week"];
+        week.backgroundColor = [UIColor clearColor];
+        [cell addSubview:week];
+        
+        //温度
+        UILabel *temperature  = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2+40, 10, 100, 30)];
+        temperature.textAlignment = NSTextAlignmentCenter;
+        temperature.textColor = [UIColor blackColor];
+        temperature.text = [future objectForKey:@"temperature"];
+        temperature.backgroundColor = [UIColor clearColor];
+        [cell addSubview:temperature];
+        
+        
+        //天气详情
+        UILabel *temperature_detail  = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth/2+40, 55, 100, 30)];
+        temperature_detail.text = [future objectForKey:@"weather"];
+        temperature_detail.textColor = [UIColor blackColor];
+        temperature_detail.textAlignment = NSTextAlignmentCenter;
+        temperature_detail.backgroundColor = [UIColor clearColor];
+        [cell addSubview:temperature_detail];
+        
+        
+        //显示天气的图片
+        UIImageView *iconImage = [[UIImageView alloc] initWithFrame:CGRectMake((ScreenWidth-40)/2, (90-30)/2, 40, 40)];
+        iconImage.backgroundColor = [UIColor clearColor];
+        NSString *icon = [[future objectForKey:@"weather_id"] objectForKey:@"fa"];
+        iconImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",icon]];
+        [cell addSubview:iconImage];
+        
+        UIImageView *lineView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 89, ScreenWidth, 1)];
+        lineView.image = [UIImage imageNamed:@"line.png"];
+        [cell addSubview:lineView];
+    }
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 90;
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end

@@ -1,0 +1,21 @@
+//
+//  HA4SInfoTool.h
+//  安心汽车
+//
+//  Created by 罗海波 on 15/4/27.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//  4s店咨询数据请求
+
+#import <Foundation/Foundation.h>
+
+@class HA4SInfoRequestParame,HA4SRequestResult,HADetailResult;
+
+@interface HA4SInfoTool : NSObject
+
+/**网络获取4S店咨询信息*/
++ (void)store4SMessage:(HA4SInfoRequestParame *)parame success:(void(^)(NSArray *))success failure:(void(^)(NSError*))failure;
+
+/**加载网络数据*/
++ (void)store4SDetailMessage:(int)parame success:(void(^)(HADetailResult *))success failure:(void(^)(NSError*))failure;
+
+@end

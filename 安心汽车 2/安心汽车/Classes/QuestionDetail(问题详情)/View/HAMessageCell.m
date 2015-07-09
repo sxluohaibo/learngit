@@ -1,0 +1,249 @@
+//
+//  HAMessageCell.m
+//  01-QQ聊天界面
+//
+//  Created by apple on 14-8-22.
+//  Copyright (c) 2014年 itcast. All rights reserved.
+//
+
+#import "HAMessageCell.h"
+#import "HAMessageFrameModel.h"
+#import "HAMessageModel.h"
+
+
+@interface HAMessageCell()
+@property(nonatomic,strong) AFHTTPRequestOperationManager *mrg;
+@property (nonatomic, strong) UIImageView *clickImageView;
+//时间
+@property (nonatomic, weak)UILabel *time;
+//正文
+@property (nonatomic, weak)UIButton *textView;
+//用户头像
+@property (nonatomic, weak)UIImageView *icon;
+@property(nonatomic,weak) UIButton *cover;
+@property(nonatomic,strong) UIImage *image;
+/**点击本地图片*/
+@property(nonatomic,strong) UIImage *localImage;
+/**录音文件的地址*/
+@property(nonatomic,copy) NSString *filePath;
+/**图片文件的地址*/
+@property(nonatomic,copy) NSString *imagepath;
+@property(nonatomic,strong) AVAudioPlayer *player;
+/** 是否正在播放*/
+@property (nonatomic,assign) BOOL playing;
+/**点击放大前图片最后一次的frame*/
+@property (nonatomic, assign) CGRect lastFrame;
+
+@end
+
+@implementation HAMessageCell
++ (instancetype)messageCellWithTableView:(UITableView *)tableview
+{
+    static NSString *ID = @"messageCell";
+    HAMessageCell *cell = [tableview dequeueReusableCellWithIdentifier:ID];
+    if (cell == nil) {
+        cell = [[self alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
+    }
+    
+    return cell;
+}
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+       //1.时间
+        UILabel *time = [[UILabel alloc]init];
+        time.textAlignment = NSTextAlignmentCenter;
+        time.font = [UIFont systemFontOfSize:13.0f];
+        [self.contentView addSubview:time];
+        self.time = time;
+        
+        //1.正文
+        UIButton *textView = [[UIButton alloc]init];
+        textView.titleLabel.font =[UIFont systemFontOfSize:13];
+        textView.titleLabel.numberOfLines = 0;//自动换行
+        textView.contentEdgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
+        [textView setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [self.contentView addSubview:textView];
+        self.textView = textView;
+        
+        //1.头像
+        UIImageView *icon = [[UIImageView alloc]init];
+        [self.contentView addSubview:icon];
+        self.icon = icon;
+        
+        self.backgroundColor = [UIColor clearColor];
+        
+    }
+    return self;
+}
+
+//设置内容和frame
+- (void)setFrameMessage:(HAMessageFrameModel *)frameMessage
+{
+    _frameMessage = frameMessage;
+    
+    HAMessageModel *model = frameMessage.message;
+    
+    //1.时间
+    self.time.frame = frameMessage.timeF;
+    self.time.text = model.time;
+    
+    //2.头像
+    self.icon.frame = frameMessage.iconF;
+    if (model.type == HAMessageModelMe) {
+        self.icon.image = [UIImage imageNamed:@"Gatsby"];
+    }else{
+        self.icon.image = [UIImage imageNamed:@"Jobs"];
+    }
+    //3.正文
+    self.textView.frame = frameMessage.textViewF;
+    switch (model.contentType) {
+        case HAMessageModelText:{
+            [self.textView setTitle:model.text forState:UIControlStateNormal];
+            break;
+        }
+        case HAMessageModelVoice:{
+            UILabel *voiceLabel=[[UILabel alloc] initWithFrame:CGRectMake(30, 20, 90, 20)];
+            voiceLabel.text=@"这是一条语音";
+            voiceLabel.font=[UIFont systemFontOfSize:13.0f];
+            [self.textView addSubview:voiceLabel];
+            [self.textView addTarget:self action:@selector(voiceClick) forControlEvents:UIControlEventTouchDown];
+            _filePath=model.text;
+            break;
+        }
+        case HAMessageModelImage:{  //图片类型
+            _imagepath=model.text;
+            UIImageView *urlImageView=[[UIImageView alloc] initWithFrame:CGRectMake(15,15, 120, 120)];
+            urlImageView.userInteractionEnabled=NO;
+            urlImageView.contentMode=UIViewContentModeScaleAspectFill;
+            urlImageView.clipsToBounds=YES;
+            UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] init];
+            if([model.text hasPrefix:@"http://"]){  //如果是从网络过来的，就调用这个方法
+                self.textView.frame=CGRectMake(frameMessage.textViewF.origin.x+30, frameMessage.textViewF.origin.y, 150,150);
+                [recognizer addTarget:self action:@selector(tapPhoto:)];
+                [urlImageView setImageWithURL:[NSURL URLWithString:model.text] placeholderImage:[UIImage imageNamed:@"timeline_image_placeholder"] options:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                    urlImageView.userInteractionEnabled=YES;
+                }];
+            }else{  //如果不是网络，就本地
+                self.textView.frame=CGRectMake(frameMessage.textViewF.origin.x-110, frameMessage.textViewF.origin.y, 150,150);
+                [urlImageView setImage:model.image];
+                 urlImageView.userInteractionEnabled=YES;
+                _localImage=model.image;
+                [recognizer addTarget:self action:@selector(tapLocalPhoto:)];
+            }
+            [urlImageView addGestureRecognizer:recognizer];
+            [self.textView addSubview:urlImageView];
+            break;
+        }
+        default:
+            break;
+    }
+    if (model.type == HAMessageModelMe) {
+        [self.textView setBackgroundImage:[UIImage resizeWithImageName:@"chat_send_nor"] forState:UIControlStateNormal];
+    }else{
+        [self.textView setBackgroundImage:[UIImage resizeWithImageName:@"chat_recive_nor"] forState:UIControlStateNormal];
+    }
+    
+}
+/**监听网络图片的点击*/
+- (void)tapPhoto:(UITapGestureRecognizer *)recognizer
+{
+    // 1.添加一个遮盖
+    UIView *cover = [[UIView alloc] init];
+    cover.frame = [UIScreen mainScreen].bounds;
+    cover.backgroundColor = [UIColor blackColor];
+    [cover addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapCover:)]];
+    [[UIApplication sharedApplication].keyWindow addSubview:cover];
+    
+    // 2.添加图片到遮盖上
+    UIImageView *imageView = [[UIImageView alloc] init];
+//    [imageView setImageWithURL:[NSURL URLWithString:_imagepath]];
+    [imageView setImageWithURL:[NSURL URLWithString:_imagepath] placeholderImage:nil];
+    imageView.frame = [cover convertRect:_textView.frame fromView:self];
+    self.lastFrame = imageView.frame;
+    self.clickImageView = imageView;
+    [cover addSubview:imageView];
+//    // 3.放大
+    [UIView animateWithDuration:0.25 animations:^{
+        CGRect frame = imageView.frame;
+        frame.size.width = cover.width; // 占据整个屏幕;
+        frame.size.height = frame.size.width * (imageView.image.size.height / imageView.image.size.width);
+        frame.origin.x = 0;
+        frame.origin.y = (cover.height - frame.size.height) * 0.5;
+        imageView.frame = frame;
+    }];
+}
+/**监听本地图片的点击*/
+- (void)tapLocalPhoto:(UITapGestureRecognizer *)recognizer
+{
+    // 1.添加一个遮盖
+    UIView *cover = [[UIView alloc] init];
+    cover.frame = [UIScreen mainScreen].bounds;
+    cover.backgroundColor = [UIColor blackColor];
+    [cover addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapCover:)]];
+    [[UIApplication sharedApplication].keyWindow addSubview:cover];
+    
+    // 2.添加图片到遮盖上
+    UIImageView *imageView = [[UIImageView alloc] init];
+    [imageView setImage:_localImage];
+    imageView.frame = [cover convertRect:_textView.frame fromView:self];
+    self.lastFrame = imageView.frame;
+    self.clickImageView = imageView;
+    [cover addSubview:imageView];
+    //    // 3.放大
+    [UIView animateWithDuration:0.25 animations:^{
+        CGRect frame = imageView.frame;
+        frame.size.width = cover.width; // 占据整个屏幕;
+        frame.size.height = frame.size.width * (imageView.image.size.height / imageView.image.size.width);
+        frame.origin.x = 0;
+        frame.origin.y = (cover.height - frame.size.height) * 0.5;
+        imageView.frame = frame;
+    }];
+}
+/**点击放大后图片，缩小*/
+- (void)tapCover:(UITapGestureRecognizer *)recognizer
+{
+    [UIView animateWithDuration:0.25 animations:^{
+        recognizer.view.backgroundColor = [UIColor clearColor];
+        self.clickImageView.frame = self.lastFrame;
+    } completion:^(BOOL finished) {
+        [recognizer.view removeFromSuperview];
+        self.clickImageView = nil;
+    }];
+}
+/** 播放语音*/
+-(void) voiceClick{
+    if(_filePath==nil) return;
+    if(_player!=nil && _player.isPlaying){ //如果还在播放，停止播放
+        [_player stop];
+        _player = nil;
+    }
+    
+    NSData *mydata;
+    if([_filePath hasPrefix:@"http://"]){
+        NSURLRequest *request=[NSURLRequest requestWithURL:[NSURL URLWithString:_filePath]];
+        NSOperationQueue *queue=[NSOperationQueue mainQueue];
+        [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+            _player=[[AVAudioPlayer alloc]initWithData:data error:nil];
+            _player.volume=15.0f;
+            if (_player !=nil){
+                [_player play];
+            }
+        }];
+    }else{
+        mydata=[NSData dataWithContentsOfFile:_filePath];
+        NSError *playerError;
+        //播放
+        _player=[[AVAudioPlayer alloc]initWithData:mydata error:nil];
+        _player.volume=20.0f;
+        if (_player == nil)
+        {
+            HALog(@"ERror creating player: %@", [playerError description]);
+        }else{
+            [_player play];
+        }
+    }
+}
+@end

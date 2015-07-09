@@ -1,0 +1,23 @@
+//
+//  QuestionModel.h
+//  提问列表demo1
+//
+//  Created by un2lock on 15/4/22.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface QuestionModel : NSObject
+/**问题id*/
+@property(nonatomic,copy) NSString *questionId;
+/**问题描述*/
+@property(nonatomic,copy) NSString *questionDescription;
+/**问题创建时间*/
+@property(nonatomic,copy) NSString *createTime;
+/**问题是否回答*/
+@property(nonatomic,assign) NSNumber *questionFlag;
+/**问题的类型*/
+@property(nonatomic,assign) NSNumber *questionType;
+@property(nonatomic,copy) NSString *carBrand;
+@end

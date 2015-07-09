@@ -1,0 +1,157 @@
+//
+//  HALoveCarViewController.m
+//  安心汽车
+//
+//  Created by 罗海波 on 15/4/8.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//  我的爱车
+
+#import "HALoveCarViewController.h"
+#import "HACarRebordViewController.h"
+#import "HALoveCarModel.h"
+#import "HAMineLoveCarDBOperator.h"
+
+
+
+@interface HALoveCarViewController ()<HACarRebordViewControllerdelegate>
+
+
+
+@property(nonatomic,strong)NSArray * loveCars;
+
+@end
+
+@implementation HALoveCarViewController
+/**
+ *  车数组懒加载
+ *
+ *  @return <#return value description#>
+ */
+- (NSArray *)loveCars
+{
+    if (_loveCars == nil) {
+        
+        _loveCars = [NSArray array];
+    }
+    
+    return _loveCars;
+}
+
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    //设置顶部导航栏样式
+    [self setupNavagationBarItem];
+    
+    UIView * footView = [[UIView alloc] init];
+    footView.frame = CGRectMake(0, 480, 320, 44);
+    footView.backgroundColor = [UIColor redColor];
+
+    //重本地数据库中加载我的爱车数据
+    _loveCars = [HAMineLoveCarDBOperator exqueryFMDBWithSql:nil];
+
+    
+}
+
+
+/**
+ *  设置顶部导航栏样式
+ */
+-(void)setupNavagationBarItem
+{
+    self.title = @"我的爱车";
+    
+    UIButton *btnRightTitle = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnRightTitle.frame = CGRectMake(0, 0, 100*0.7, 59/2);
+    btnRightTitle.titleLabel.font = [UIFont boldSystemFontOfSize:15.0f];
+    [btnRightTitle setTitle:@"添加车辆" forState:UIControlStateNormal];
+    [btnRightTitle setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btnRightTitle setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+    [btnRightTitle addTarget:self action:@selector(addCarInfo:) forControlEvents:UIControlEventTouchUpInside];
+    [btnRightTitle setShowsTouchWhenHighlighted:TRUE];
+    UIBarButtonItem * rightBtn = [[UIBarButtonItem alloc] initWithCustomView:btnRightTitle];
+    self.navigationItem.rightBarButtonItem = rightBtn;
+}
+
+/**
+ *  导航栏游册按钮点击监听按钮
+ */
+-(void)addCarInfo:(UIButton*)btn
+{
+    HACarRebordViewController * vc = [[HACarRebordViewController alloc] initWithNibName:@"HACarRebordViewController" bundle:nil];
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+
+
+#pragma tableView 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.loveCars.count;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    static NSString *ID = @"cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
+    if (!cell) {
+        
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
+    }
+    
+    //设置cell样式
+    HALoveCarModel * loveCar = self.loveCars[indexPath.row];
+    cell.imageView.image = [UIImage imageNamed:@"00"];
+    cell.textLabel.text = loveCar.carType;
+    cell.detailTextLabel.text = loveCar.carinfo;
+    cell.accessoryType  = UITableViewCellAccessoryCheckmark;
+    return cell;
+}
+
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"%ld",indexPath.row);
+    HACarRebordViewController * vc = [[HACarRebordViewController alloc] init];
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+    vc.loveCarMessage = self.loveCars[indexPath.row];
+
+}
+
+/*删除用到的函数*/
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete){
+        
+       
+        //进行删除
+        [HAMineLoveCarDBOperator deleteFMDBWithSql:[NSString stringWithFormat:@"delete from t_carport where carType = '%@' and carInfo = '%@';",cell.textLabel.text,cell.detailTextLabel.text]];
+       
+        //删除后重新加载数据
+        self.loveCars = [HAMineLoveCarDBOperator exqueryFMDBWithSql:nil];
+        [self.tableView reloadData];
+
+    }
+}
+
+
+#pragma mark - HACarRebordViewController 代理方法
+/**
+ *  点击添加车辆信息保存按钮
+ */
+- (void)CarRebordViewControllerToLoadNewDate
+{
+    self.loveCars = [HAMineLoveCarDBOperator exqueryFMDBWithSql:nil];
+    [self.tableView reloadData];
+    
+}
+
+@end

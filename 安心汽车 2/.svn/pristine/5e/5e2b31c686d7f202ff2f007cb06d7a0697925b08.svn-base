@@ -1,0 +1,24 @@
+//
+//  HAViobkImageView.m
+//  安心汽车
+//
+//  Created by kongw on 15/5/4.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//
+
+#import "HAViobkImageView.h"
+
+@implementation HAViobkImageView
+
+- (id)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    //self.image = [UIImage imageNamed:@"input_bar"];
+    if (self) {
+        UIImageView *lineImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, frame.size.height-0.5, frame.size.width, 0.5)];
+        lineImageView.backgroundColor = [UIColor blackColor];
+        [self addSubview:lineImageView];
+    }
+    return self;
+}
+
+@end

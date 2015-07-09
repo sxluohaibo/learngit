@@ -1,0 +1,22 @@
+//
+//  HABeanUserInput.h
+//  安心汽车
+//
+//  Created by kongw on 15/4/21.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface HABeanUserInput : HABaseAnxin
+
+
++ (HABeanUserInput *)shareUserInput;
+- (HAUserInputModel *)addUserInfoData:(HAUserInputModel *)userInfo;
+- (void)removeDB;
+- (HAUserInputModel *)getUserInfoData:(NSString *)carType;//车牌号得到数据
+- (NSMutableArray *)getUserInputArr:(NSString *)userNO;//得到用户编号得到数据
+- (void)upDataUserInfoData:(HAUserInputModel *)inputModel;//更新数据
+- (BOOL)whetherUserCarType:(NSString *)carType;//根据车牌号判断这条数据在不在
+- (BOOL)deleteInputDB:(NSString *)carType;//根据车牌删除数据
+@end

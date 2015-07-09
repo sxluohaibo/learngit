@@ -1,0 +1,15 @@
+//
+//  HABrandSelectViewController.h
+//  安心汽车
+//
+//  Created by 罗海波 on 15/4/9.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//  品牌选择控制器
+
+#import <UIKit/UIKit.h>
+
+@interface HABrandSelectViewController : UITableViewController
+
+@property (assign) NSNumber* type;
+
+@end

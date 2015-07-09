@@ -1,0 +1,34 @@
+//
+//  HAManger.h
+//  安心汽车
+//
+//  Created by 孔伟 on 15/3/4.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "HACarInfoResult.h"
+#import "HAUserInputModel.h"
+
+@interface HAManger : NSObject
+
++(NSString*)decryptUseDES:(NSString*)cipherText key:(NSString*)key;//解码
++(NSString *)encryptUseDES:(NSString *)clearText key:(NSString *)key;//编码
+//+(NSInteger)checkVersion:(NSString *)url;  //判断应用版本号
++(void)AddUserMobileUseInfoIOS:(NSString *)username userID:(NSString *)userID;//添加信息到UserInfoIOS接口
++(BOOL)HAbackTime:(NSString *)oldDate;//时间的判断
++(NSString *)HAUTF8Change:(NSString *)tempString;
++(NSString *)HAReplaceString:(NSString *)replaceString excuseString:(NSString *)excuse replaceSting:(NSString *)replace;//字符串的替换
++(BOOL)HAReplaceString:(NSString *)replaceString excuseString:(NSString *)excuse;//字符串的取代
++(NSInteger)checkVersion:(NSString *)url;//检查版本更新
+
+
++(NSArray *)ParseProviceResultData:(NSDictionary *)resultData;
+//得到用户车辆的信息
++ (HACarInfoResult *)parseCarResult:(NSDictionary *)data;
+//得到用户输入模型
++ (HAUserInputModel *)parseUserInput:(NSDictionary *)data;
+
++ (NSDate *)dateFromString:(NSString *)dateString;
++ (NSString *)stringFromDate:(NSDate *)date;
+@end

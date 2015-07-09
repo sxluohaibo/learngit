@@ -1,0 +1,190 @@
+//
+//  HAViolationListViewController.m
+//  安心汽车
+//
+//  Created by kongw on 15/3/25.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//
+
+#import "HAViolationListViewController.h"
+#define LoadCount 5//每页加载的条数
+
+@interface HAViolationListViewController ()
+
+@end
+
+@implementation HAViolationListViewController
+@synthesize key;
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+    //获取数据并刷新
+    YTKKeyValueStore *store = YTKKeyValueStoreANXIN;//先建数据库
+    YTKKeyValueItem *item = [store getYTKKeyValueItemById:key fromTable:VioResultDB];
+    NSDictionary *dic = item.itemObject;
+    if ([[dic objectForKey:@"resultcode"] integerValue] == 200) {
+        vioInfoListArr = [[dic objectForKey:@"result"] objectForKey:@"lists"];
+    }else{
+        vioInfoListArr = [[NSMutableArray alloc] init];
+    }
+    
+    listTableView = [[PullingRefreshTableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+    listTableView.backgroundColor = [UIColor clearColor];
+    listTableView.pullingDelegate = self;
+    listTableView.headerOnly = TRUE;
+    listTableView.delegate = self;
+    listTableView.dataSource = self;
+    [self.view addSubview:listTableView];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return vioInfoListArr.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *ID = @"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
+    if (!cell) {
+
+    }
+    NSDictionary *dic = [vioInfoListArr objectAtIndex:indexPath.row];
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    NSString *time = [dic objectForKey:@"date"];
+    NSString *title = [dic objectForKey:@"area"];
+    NSString *descrption = [dic objectForKey:@"act"];
+    NSString *money = [dic objectForKey:@"money"];
+    NSString *fen = [dic objectForKey:@"fen"];
+    NSString *hand = [dic objectForKey:@"handled"];
+    
+    UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, ScreenWidth-20, 30)];
+    timeLabel.backgroundColor = [UIColor clearColor];
+    timeLabel.textAlignment = NSTextAlignmentLeft;
+    timeLabel.text = [NSString stringWithFormat:@"时间：%@",time];
+    [cell addSubview:timeLabel];
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 30, ScreenWidth-20, 40)];
+    titleLabel.font = [UIFont systemFontOfSize:20.0f];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.textAlignment = NSTextAlignmentLeft;
+    titleLabel.text = [NSString stringWithFormat:@"标题：%@",title];;
+    [cell addSubview:titleLabel];
+    
+    
+    CGSize labelSize = [descrption sizeWithFont:[UIFont systemFontOfSize:15.0f] constrainedToSize:CGSizeMake(ScreenWidth-20, 2000) lineBreakMode:NSLineBreakByWordWrapping];
+    //评论内容
+    UILabel *desLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 70, ScreenWidth-20, labelSize.height+20)];
+    desLabel.backgroundColor = [UIColor clearColor];
+    desLabel.numberOfLines = 0;
+    desLabel.textAlignment = NSTextAlignmentLeft;
+    desLabel.text = [NSString stringWithFormat:@"内容：%@",descrption];;
+    [cell addSubview:desLabel];
+    
+    UILabel *endlabel = [[UILabel alloc] initWithFrame:CGRectMake(10, labelSize.height + 70 + 20, ScreenWidth-20, 30)];
+    endlabel.backgroundColor = [UIColor clearColor];
+    endlabel.font = [UIFont systemFontOfSize:14.0f];
+    endlabel.textAlignment = NSTextAlignmentLeft;
+    if ([hand integerValue] == 0) {
+        endlabel.text = [NSString stringWithFormat:@"罚款:%@元    扣分:%@分    状态:%@",money,fen,@"未处理"];
+    }else{
+        endlabel.text = [NSString stringWithFormat:@"罚款:%@元    扣分:%@分    状态:%@",money,fen,@"已处理"];
+    }
+    [cell addSubview:endlabel];
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSDictionary *dic = [vioInfoListArr objectAtIndex:indexPath.row];
+    NSString *descrption = [dic objectForKey:@"act"];
+    CGSize labelSize = [descrption sizeWithFont:[UIFont systemFontOfSize:15.0f] constrainedToSize:CGSizeMake(ScreenWidth, 2000) lineBreakMode:NSLineBreakByWordWrapping];
+    return 100+labelSize.height + 20;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+- (void)choiceType{
+    NSLog(@"请求数据");
+    //YTKKeyValueStore *store = YTKKeyValueStoreANXIN;//先建数据库
+    //NSDictionary *dic = [store getObjectById:key fromTable:VioLationUserInputData];
+    //if (dic) {
+    //   [self LoadDataInput:dic];
+    //}
+}
+
+//开始刷新
+- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView{
+    LOG(@"startRefreshing");
+    [self choiceType];
+    [self performSelector:@selector(loadData) withObject:nil afterDelay:1.0f];
+}
+
+- (void)loadData{
+    //请求结束停止转动
+    [listTableView tableViewDidFinishedLoading];
+}
+
+#pragma mark ---UIScrollView delegate method-------
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [listTableView tableViewDidScroll:scrollView];
+}
+
+
+#pragma mark ------------- PullingRefreshTableViewDelegate-------------
+//开始刷新
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    [listTableView tableViewDidEndDragging:scrollView];
+}
+
+
+//跳转的方法
+- (void)LoadDataInput:(NSDictionary *)userInfoDic{
+    NSString *cityName = [userInfoDic objectForKey:@"城市编号"];//城市名称
+    NSString *carCard = [userInfoDic objectForKey:@"车牌号"];//车牌号
+    NSString *engineno = @"";
+    if ([userInfoDic objectForKey:@"发动机号"]) {
+        engineno = [userInfoDic objectForKey:@"发动机号"];//发动机号
+    }else{
+        engineno = @"";
+    }
+    NSString *classno = @"";
+    if ([userInfoDic objectForKey:@"车架号"]) {
+        classno = [userInfoDic objectForKey:@"车架号"];//发动机号
+    }else{
+        classno = @"";
+    }
+    NSMutableDictionary *params=[NSMutableDictionary dictionary];
+    [params setObject:cityName forKey:@"city"];
+    [params setObject:carCard forKey:@"hphm"];
+    [params setObject:engineno forKey:@"engineno"];
+    [params setObject:classno forKey:@"classno"];
+    NSString *downName = @"T100040/wz/query";
+    MKNetworkOperation *op = [ApplicationDelegate.engine operationWithPath:downName params:params httpMethod:@"GET" ssl:NO];
+    //NSLog(@"op.url == %@",op.url);
+    [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        NSDictionary *cityInfo = [completedOperation.responseString objectFromJSONString];
+        //NSLog(@"cityInfo == %@",cityInfo);
+        if ([[cityInfo objectForKey:@"resultcode"] integerValue] == 200) {
+            //保存数据
+            YTKKeyValueStore *store = YTKKeyValueStoreANXIN;//先建数据库
+            //[store createTableWithName:VioLationUserInputData];
+            [store createTableWithName:VioResultDB];
+            //[store putObject:userInfoDic withId:carCard intoTable:VioLationUserInputData];
+            [store putObject:cityInfo withId:carCard intoTable:VioResultDB];
+        }else{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"加载数据失败" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        NSLog(@"失败");
+    }];
+    [ApplicationDelegate.engine enqueueOperation:op];
+}
+@end

@@ -1,0 +1,63 @@
+//
+//  MapViewController.m
+//  
+//
+//  Created by Jian-Ye on 12-10-16.
+//  Copyright (c) 2012年 Jian-Ye. All rights reserved.
+//
+
+#import "MapViewController.h"
+#define span 180
+
+@interface MapViewController (){
+    NSMutableArray *_annotationList;
+    CalloutMapAnnotation *_calloutAnnotation;
+	CalloutMapAnnotation *_previousdAnnotation;
+}
+@property(weak,nonatomic) UIView *map;
+-(void)setAnnotionsWithList:(NSArray *)list;
+@end
+
+@implementation MapViewController
+@synthesize delegate;
+
+- (void)viewDidLoad
+{
+    _annotationList = [[NSMutableArray alloc] init];
+    [super viewDidLoad];
+    
+    _mapView=[[MKMapView alloc] init];
+    [self.view addSubview:_mapView];
+    _mapView.backgroundColor=[UIColor yellowColor];
+    
+}
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    //通过这句话来改变他的大小
+    //CGFloat width=[UIScreen mainScreen].bounds.size.width;
+    _mapView.frame=CGRectMake(0, 0, ScreenWidth, ScreenHeight);
+    _mapView.backgroundColor=[UIColor yellowColor];
+}
+
+-(void)setAnnotionsWithList:(NSArray *)list
+{
+    for (NSDictionary *dic in list) {
+        CLLocationDegrees latitude=[[dic objectForKey:@"latitude"] doubleValue];
+        CLLocationDegrees longitude=[[dic objectForKey:@"longitude"] doubleValue];
+        CLLocationCoordinate2D location=CLLocationCoordinate2DMake(latitude, longitude);
+        
+        MKCoordinateRegion region=MKCoordinateRegionMakeWithDistance(location,span ,span);
+        MKCoordinateRegion adjustedRegion = [_mapView regionThatFits:region];
+        [_mapView setRegion:adjustedRegion animated:YES];
+        
+        BasicMapAnnotation *  annotation=[[BasicMapAnnotation alloc] initWithLatitude:latitude andLongitude:longitude];
+        [_mapView addAnnotation:annotation];
+    }
+}
+- (void)resetAnnitations:(NSArray *)data
+{
+    [_annotationList removeAllObjects];
+    [_annotationList addObjectsFromArray:data];
+    [self setAnnotionsWithList:_annotationList];
+}
+@end

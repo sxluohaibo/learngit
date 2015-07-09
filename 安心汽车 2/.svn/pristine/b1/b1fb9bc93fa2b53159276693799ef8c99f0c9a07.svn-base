@@ -1,0 +1,27 @@
+//
+//  HAVioDetailController.m
+//  安心汽车
+//
+//  Created by kongw on 15/5/4.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//
+
+#import "HAVioDetailController.h"
+
+@interface HAVioDetailController ()
+
+@end
+
+@implementation HAVioDetailController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.navigationItem.title = @"增加车辆";
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sub_bg.jpg"]];;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+@end

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F333B493-8EC2-479D-950B-08CF242248C3</string>
+	<key>IDESourceControlProjectName</key>
+	<string>安心汽车</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>a1be41ad-fd76-7d4b-8fa3-ce057a7d9d3e++9439</key>
+		<string>https://219.239.94.171/svn/2015/anxincar_ios/trunk/%252525252525E5%252525252525AE%25252525252589%252525252525E5%252525252525BF%25252525252583%252525252525E6%252525252525B1%252525252525BD%252525252525E8%252525252525BD%252525252525A6</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>安心汽车.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>a1be41ad-fd76-7d4b-8fa3-ce057a7d9d3e++9439</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>a1be41ad-fd76-7d4b-8fa3-ce057a7d9d3e++9439</key>
+		<string>https://219.239.94.171/svn/2015</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://219.239.94.171/svn/2015/anxincar_ios/trunk/%252525252525E5%252525252525AE%25252525252589%252525252525E5%252525252525BF%25252525252583%252525252525E6%252525252525B1%252525252525BD%252525252525E8%252525252525BD%252525252525A6/%E5%AE%89%E5%BF%83%E6%B1%BD%E8%BD%A6.xcodeproj</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>a1be41ad-fd76-7d4b-8fa3-ce057a7d9d3e++9439</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>a1be41ad-fd76-7d4b-8fa3-ce057a7d9d3e++9439</string>
+			<key>IDESourceControlWCCName</key>
+			<string>%E5%AE%89%E5%BF%83%E6%B1%BD%E8%BD%A6</string>
+		</dict>
+	</array>
+</dict>
+</plist>

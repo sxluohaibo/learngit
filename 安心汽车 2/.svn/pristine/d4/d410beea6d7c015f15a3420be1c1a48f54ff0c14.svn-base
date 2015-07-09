@@ -1,0 +1,36 @@
+//
+//  HAMapViewController.m
+//  安心汽车
+//
+//  Created by kongw on 15/4/30.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//
+
+#import "HAMapViewController.h"
+
+@interface HAMapViewController (){
+    MapViewController *mapViewController;
+}
+
+@end
+
+@implementation HAMapViewController
+@synthesize mapDic;
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    NSArray *array = [NSArray arrayWithObjects:mapDic, nil];
+    mapViewController = [[MapViewController alloc] init];
+    mapViewController.delegate = self;
+    [self addChildViewController:mapViewController];
+    [self.view addSubview:mapViewController.view];
+    [mapViewController resetAnnitations:array];
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+
+}
+
+@end

@@ -1,0 +1,95 @@
+//
+//  HADetailMessageViewController.m
+//  安心汽车
+//
+//  Created by 罗海波 on 15/4/29.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//  咨询详情界面
+
+#import "HADetailMessageViewController.h"
+#import "HA4SInfoTool.h"
+#import "HADetailResult.h"
+
+
+#define margin 5
+#define  iconViewSize 80
+#define  ContentSize 11  //咨询详情
+#define titleSize 12  //咨询详情标题字体大小
+@interface HADetailMessageViewController ()
+
+/**图像*/
+@property(nonatomic,weak)UIImageView * iconView;
+
+/**新闻标题*/
+@property(nonatomic,weak)UILabel * newtitle;
+
+/**详细标题*/
+@property(nonatomic,weak)UILabel * detailtitle;
+
+
+/**时间*/
+@property(nonatomic,weak)UILabel * timeTitle;
+
+
+/**咨询详情*/
+@property(nonatomic,strong)NSArray * message;
+
+/**咨询详情*/
+@property(nonatomic,strong)HADetailResult * result;
+@end
+
+@implementation HADetailMessageViewController
+
++ (HADetailMessageViewController *) Message:(int)newId
+{
+    HADetailMessageViewController * vc = [[self alloc] init];
+    vc.newId = newId;
+    return vc;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [HA4SInfoTool store4SDetailMessage:self.newId success:^(HADetailResult * result) {
+        self.result = result;
+        NSLog(@"self == %@",self.result);
+        //添加详情界面的控件
+        [self setupNew];
+    } failure:^(NSError *error) {
+        [MBProgressHUD showError:[NSString stringWithFormat:@"%@",error]];
+        NSLog(@"error:%@",error);
+    }];
+}
+
+/**
+ *  添加详情界面的控件
+ */
+- (void)setupNew{
+    self.title = @"咨询详情";
+    UIView * newView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 74)];
+    [self.view addSubview:newView];
+    
+    UIImageView *iconImage = [[UIImageView alloc] initWithFrame:CGRectMake(14, 12, 56, 50)];
+    iconImage.backgroundColor = HAColor(47, 92, 143);
+    [newView addSubview:iconImage];
+    
+    UILabel *titleName = [[UILabel alloc] initWithFrame:CGRectMake(80, 13, 225, 12)];
+    titleName.textColor = HAColor(47, 92, 143);
+    titleName.text = self.result.title;
+    titleName.font = [UIFont fontWithName:@"Helvetica-Bold" size:14.0f];
+    [newView addSubview:titleName];
+    
+    CGSize mydetailsize = [self.result.content sizeWithFont:[UIFont systemFontOfSize:10.0f] constrainedToSize:CGSizeMake(225, 36)];
+    
+    UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 28, 225, mydetailsize.height)];
+    descriptionLabel.textColor = RGBA(114, 135, 160, 1);
+    descriptionLabel.text = self.result.content;
+    descriptionLabel.numberOfLines = 0;
+    descriptionLabel.font = [UIFont systemFontOfSize:10.0f];
+    [newView addSubview:descriptionLabel];
+    
+    UIImageView *lineImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 74, ScreenWidth, 1)];
+    lineImageView.image = [UIImage imageNamed:@"dots_divider.png"];
+    [newView addSubview:lineImageView];
+}
+
+@end

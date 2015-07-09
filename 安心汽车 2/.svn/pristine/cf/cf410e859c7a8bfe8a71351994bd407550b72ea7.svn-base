@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1343.14">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Heiti SC Light'}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Menlo}
+    span.s1 {font-variant-ligatures: no-common-ligatures}
+    span.s2 {font: 11.0px Menlo; font-variant-ligatures: no-common-ligatures}
+    span.s3 {font: 11.0px 'Heiti SC Light'; font-variant-ligatures: no-common-ligatures}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">限行时间段：</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>2014</span><span class="s3">年</span><span class="s1">1</span><span class="s3">月</span><span class="s1">5</span><span class="s3">日至</span><span class="s1">4</span><span class="s3">月</span><span class="s1">13</span><span class="s3">日</span></p>
+<p class="p1"><span class="s1">周一至五限行尾号顺序为</span><span class="s2">:1</span><span class="s1">和</span><span class="s2">6</span><span class="s1">，</span><span class="s2">2</span><span class="s1">和</span><span class="s2">7</span><span class="s1">，</span><span class="s2">3</span><span class="s1">和</span><span class="s2">8</span><span class="s1">，</span><span class="s2">4</span><span class="s1">和</span><span class="s2">9</span><span class="s1">，</span><span class="s2">5</span><span class="s1">和</span><span class="s2">0;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>2014</span><span class="s3">年</span><span class="s1">4</span><span class="s3">月</span><span class="s1">14</span><span class="s3">日至</span><span class="s1">7</span><span class="s3">月</span><span class="s1">12</span><span class="s3">日</span></p>
+<p class="p1"><span class="s1">周一至五限行尾号顺序为</span><span class="s2">:5</span><span class="s1">和</span><span class="s2">0</span><span class="s1">，</span><span class="s2">1</span><span class="s1">和</span><span class="s2">6</span><span class="s1">，</span><span class="s2">2</span><span class="s1">和</span><span class="s2">7</span><span class="s1">，</span><span class="s2">3</span><span class="s1">和</span><span class="s2">8</span><span class="s1">，</span><span class="s2">4</span><span class="s1">和</span><span class="s2">9;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>2014</span><span class="s3">年</span><span class="s1">7</span><span class="s3">月</span><span class="s1">13</span><span class="s3">日至</span><span class="s1">10</span><span class="s3">月</span><span class="s1">11</span><span class="s3">日</span></p>
+<p class="p1"><span class="s1">周一至五限行尾号顺序为</span><span class="s2">:4</span><span class="s1">和</span><span class="s2">9</span><span class="s1">，</span><span class="s2">5</span><span class="s1">和</span><span class="s2">0</span><span class="s1">，</span><span class="s2">1</span><span class="s1">和</span><span class="s2">6</span><span class="s1">，</span><span class="s2">2</span><span class="s1">和</span><span class="s2">7</span><span class="s1">，</span><span class="s2">3</span><span class="s1">和</span><span class="s2">8;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>2014</span><span class="s3">年</span><span class="s1">10</span><span class="s3">月</span><span class="s1">12</span><span class="s3">日至</span><span class="s1">2015</span><span class="s3">年</span><span class="s1">1</span><span class="s3">月</span><span class="s1">10</span><span class="s3">日</span></p>
+<p class="p1"><span class="s1">周一至五限行尾号顺序为</span><span class="s2">:3</span><span class="s1">和</span><span class="s2">8</span><span class="s1">，</span><span class="s2">4</span><span class="s1">和</span><span class="s2">9</span><span class="s1">，</span><span class="s2">5</span><span class="s1">和</span><span class="s2">0</span><span class="s1">，</span><span class="s2">1</span><span class="s1">和</span><span class="s2">6</span><span class="s1">，</span><span class="s2">2</span><span class="s1">和</span><span class="s2">7;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>2015</span><span class="s3">年</span><span class="s1">1</span><span class="s3">月</span><span class="s1">11</span><span class="s3">日至</span><span class="s1">2015</span><span class="s3">年</span><span class="s1">4</span><span class="s3">月</span><span class="s1">10</span><span class="s3">日</span></p>
+<p class="p1"><span class="s1">周一至五限行尾号顺序为</span><span class="s2">:2</span><span class="s1">和</span><span class="s2">7</span><span class="s1">，</span><span class="s2">3</span><span class="s1">和</span><span class="s2">8</span><span class="s1">，</span><span class="s2">4</span><span class="s1">和</span><span class="s2">9</span><span class="s1">，</span><span class="s2">5</span><span class="s1">和</span><span class="s2">0</span><span class="s1">，</span><span class="s2">1</span><span class="s1">和</span><span class="s2">6;</span></p>
+<p class="p1"><span class="s1">限行尾号含临时号牌，车牌尾号为英文字母的按</span><span class="s2">0</span><span class="s1">号处理。法定节假日和公休日不限行。限行车牌尾号每</span><span class="s2">13</span><span class="s1">周轮换一次。</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>2014</span><span class="s1">北京尾号限行处罚新规定：限行范围</span><span class="s2">/</span><span class="s1">限行时间段</span></p>
+<p class="p1"><span class="s1">公务车：停驶范围为本市行政区域内所有道路，停驶时间为</span><span class="s2">0</span><span class="s1">时至</span><span class="s2">24</span><span class="s1">时。</span></p>
+<p class="p1"><span class="s1">私家车：限行时间段为周一至五的早</span><span class="s2">7</span><span class="s1">时至晚</span><span class="s2">20</span><span class="s1">时，限行范围为五环路以内</span><span class="s2">(</span><span class="s1">不包括五环路主路</span><span class="s2">)</span><span class="s1">。</span></p>
+<p class="p1"><span class="s1">　　北京外地车限行规定</span></p>
+<p class="p1"><span class="s1">一、非本市载客汽车</span><span class="s2">(</span><span class="s1">含临时号牌车辆</span><span class="s2">)</span><span class="s1">需进入五环路</span><span class="s2">(</span><span class="s1">含</span><span class="s2">)</span><span class="s1">以内道路行驶的，须办理进京通行证件</span><span class="s2">(</span><span class="s1">进京客车通行证、北京市区通行证</span><span class="s2">)</span><span class="s1">。</span></p>
+<p class="p1"><span class="s1">二、持有进京通行证件的非本市进京载客汽车，工作日</span><span class="s2">7</span><span class="s1">时至</span><span class="s2">9</span><span class="s1">时、</span><span class="s2">17</span><span class="s1">时至</span><span class="s2">20</span><span class="s1">时，禁止在五环路</span><span class="s2">(</span><span class="s1">含</span><span class="s2">)</span><span class="s1">以内道路行驶。</span></p>
+<p class="p1"><span class="s1">非本市进京载客汽车在遵守上述规定的同时，工作日</span><span class="s2"> 9</span><span class="s1">时至</span><span class="s2">17</span><span class="s1">时，参照《北京市人民政府关于实施工作日高峰时段区域限行交通管理措施的通告》规定，执行按车牌尾号工作日高峰时段区域限行的交通管理措施，限行范围为五环路</span><span class="s2">(</span><span class="s1">含</span><span class="s2">)</span><span class="s1">以内道路，车牌尾号轮换方式按照北京市机动车车牌尾号的轮换方式执行。</span></p>
+<p class="p1"><span class="s1">三、下列非本市进京载客汽车不受上述限行措施限制：</span></p>
+<p class="p1"><span class="s2">1. </span><span class="s1">部队、武警及执行任务的警车、救护车等特种车辆。</span></p>
+<p class="p1"><span class="s2">2. </span><span class="s1">持道路运输证件的省际长途客运车辆和省际旅游大型客车。</span></p>
+<p class="p1"><span class="s1">　　不受限行限制的机动车：</span></p>
+<p class="p1"><span class="s2">(</span><span class="s1">一</span><span class="s2">)</span><span class="s1">警车、消防车、救护车、工程救险车</span><span class="s2">;</span></p>
+<p class="p1"><span class="s2">(</span><span class="s1">二</span><span class="s2">)</span><span class="s1">公共电汽车、省际长途客运车辆及大型客车、出租汽车</span><span class="s2">(</span><span class="s1">不含租赁车辆</span><span class="s2">)</span><span class="s1">、小公共汽车、邮政专用车、持有市运输管理部门核发的旅游客车营运证件的车辆，经市公安交通管理部门核定的单位班车和学校校车</span><span class="s2">;</span></p>
+<p class="p1"><span class="s2">(</span><span class="s1">三</span><span class="s2">)</span><span class="s1">车身喷涂统一标识并执行任务的行政执法车辆和清障专用车辆</span><span class="s2">;</span></p>
+<p class="p1"><span class="s2">(</span><span class="s1">四</span><span class="s2">)</span><span class="s1">环卫、园林、道路养护的专项作业车辆，殡仪馆的殡葬车辆</span><span class="s2">;</span></p>
+<p class="p1"><span class="s2">(</span><span class="s1">五</span><span class="s2">)</span><span class="s1">悬挂</span><span class="s2">“</span><span class="s1">使</span><span class="s2">”</span><span class="s1">字头号牌车辆及经批准临时入境的车辆。</span></p>
+</body>
+</html>

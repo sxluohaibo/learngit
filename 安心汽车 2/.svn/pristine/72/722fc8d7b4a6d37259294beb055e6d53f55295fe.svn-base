@@ -1,0 +1,209 @@
+//
+//  HALoginViewController.m
+//  安心汽车
+//
+//  Created by un2lock on 15/4/9.
+//  Copyright (c) 2015年 ywkj. All rights reserved.
+//
+
+#import "HALoginViewController.h"
+#import "HAUserParam.h"
+#import "HAUserResult.h"
+#import "HAregisteViewController.h"
+#import "HAUserTool.h"
+#import "HAUITabBarController.h"
+#import "HACarInfo.h"
+#import "HABeanLoginUserInfo.h"
+#import "HAUserDefalutTool.h"
+#import "HAUserInfoModel.h"
+#import "NSObject+MJKeyValue.h"
+
+@interface HALoginViewController ()
+@property(nonatomic,weak) UITextField *userAccount;
+@property(nonatomic,weak) UITextField *userPwd;
+@end
+
+@implementation HALoginViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.view.backgroundColor=[UIColor whiteColor];
+    
+    UITextField *userAccount=[self createTextFiled:@"account_input_bg" placeText:@"请输入您的手机号码"];
+    userAccount.text=@"15958032377";
+    //userAccount.text=@"18565711060";
+    userAccount.keyboardType=UIKeyboardTypePhonePad;
+    userAccount.clearButtonMode=UITextFieldViewModeWhileEditing;
+    self.userAccount=userAccount;
+    userAccount.delegate=self;
+    [self.view addSubview:userAccount];
+    
+    UITextField *userPwd=[self createTextFiled:@"account_input_bg" placeText:@"请输入您的密码"];
+    userPwd.y=userAccount.y+userAccount.height+10;
+    userPwd.secureTextEntry=YES;
+    userPwd.textAlignment=NSTextAlignmentLeft;
+    userPwd.clearButtonMode=UITextFieldViewModeWhileEditing;
+    self.userPwd=userPwd;
+    [self.view addSubview:userPwd];
+    
+    
+    UIButton *registBtn=[self createButton:@"注册" imageName:@"account_btnRegist"];
+    registBtn.x=userAccount.x;
+    registBtn.y=userPwd.y+userPwd.height+10;
+    registBtn.width=userAccount.width * 0.46;
+    registBtn.height=47;
+    [registBtn addTarget:self action:@selector(regist) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:registBtn];
+    
+    UIButton *loginBtn=[self createButton:@"登录" imageName:@"account_btnlogin"];
+    loginBtn.x=ScreenWidth *0.5;
+    loginBtn.y=userPwd.y+userPwd.height+10;
+    loginBtn.width=userAccount.width * 0.5;
+    loginBtn.height=47;
+    [loginBtn addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:loginBtn];
+    
+    UIButton *button=[[UIButton alloc] init];
+    button.size=CGSizeMake(30, 44);
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [button setTitle:@"返回" forState:UIControlStateNormal];
+    [button.titleLabel setFont:[UIFont systemFontOfSize:13]];
+    [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem=[[UIBarButtonItem alloc] initWithCustomView:button];
+}
+
+-(void)back{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+/**
+ *  创建注册和登录按钮
+ */
+-(UIButton *) createButton:(NSString *) title imageName:(NSString *)imageName{
+    UIButton *button=[[UIButton alloc] init];
+    button.titleLabel.font = [UIFont systemFontOfSize:13];
+    [button setBackgroundImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    [button setTitle:title forState:UIControlStateNormal];
+    //[button setTitle:title forState:UIControlEventTouchDown];
+    return button;
+}
+/**
+ *  创建用户和密码输入框
+ */
+-(UITextField *) createTextFiled:(NSString *) imageName placeText:(NSString *)placeText {
+    UITextField *filed=[[UITextField alloc] initWithFrame:CGRectMake(ScreenWidth *0.05,90, ScreenWidth *0.9, 50)];
+    [filed setBackground:[UIImage imageNamed:imageName]];
+    filed.placeholder=placeText;
+    filed.font=[UIFont systemFontOfSize:16];
+    filed.leftView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, filed.frame.size.width *0.04, filed.frame.size.height)];
+    filed.leftViewMode=UITextFieldViewModeAlways;
+    filed.textAlignment=NSTextAlignmentLeft;
+    return filed;
+}
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    [self.view endEditing:YES];  //关闭键盘
+}
+/**
+ *  用户注册
+ */
+-(void)regist{
+    HAregisteViewController *registVc=[[HAregisteViewController alloc] init];
+    registVc.modalInPopover=YES;
+    [self presentViewController:registVc animated:YES completion:nil];
+}
+/**
+ *  登录逻辑
+ */
+-(void)login{
+    NSString *userName= _userAccount.text;
+    if(userName.length <= 0 || [userName isEqualToString:@""]){
+        [MBProgressHUD showError:@"帐号不能为空"];
+        return ;
+    }
+    if(![self checkTel:userName]){
+        [MBProgressHUD showError:@"帐号必须是手机号"];
+        _userAccount.text=@"";
+        return ;
+    }
+    NSString *userPwd= _userPwd.text;
+    if(userPwd.length <= 0 || [userPwd isEqualToString:@""]){
+        [MBProgressHUD showError:@"密码不能为空"];
+        return ;
+    }
+    if(userPwd.length<6){
+        [MBProgressHUD showError:@"密码少于6位"];
+        _userPwd.text=@"";
+        return ;
+    }
+    [MBProgressHUD showMessage:@"正在登录中"];
+    HAUserParam *params=[[HAUserParam alloc] init];
+    params.userAccount=userName;
+    params.password=userPwd;
+    [HAUserTool login:params success:^(HAUserResult *result) {
+        NSLog(@"result == %@",result);
+        [MBProgressHUD hideHUD];
+        if([result.result isEqualToString:@"success"]){
+            [MBProgressHUD showSuccess:@"登录成功"];
+            //数据保存到数据库
+            [[HABeanLoginUserInfo shareLoginUserInfo] addLoginUserInfoData:result param:params userNo:result.userInfo.userNo];
+            [[NSUserDefaults standardUserDefaults] setObject:result.userInfo.userNo forKey:LoginUserNo];//保存电话号码和userNumber
+            [[NSUserDefaults standardUserDefaults] setObject:userName forKey:LoginUserPhonenumer];
+            [self getUserCarData];//获取车辆信息
+        }else{
+            [MBProgressHUD showError:@"登录失败"];
+        }
+    } failure:^(NSError *error) {
+        [MBProgressHUD hideHUD];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [MBProgressHUD showError:@"网络异常，请检查网络"];
+        });
+    }];
+    
+}
+
+//获取用户的登陆车辆信息
+- (void)getUserCarData{
+    [HAUserTool carInfo:nil success:^(HACarInfoResult *result) {
+        if ([result.resultCode integerValue] == 1) {
+            [[HACarInfo shareCarInfo] addCarInfoData:result andUserNo:[[NSUserDefaults standardUserDefaults] objectForKey:LoginUserNo]];
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }else{
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
+/**
+ *  验证手机号的正则表达式
+ */
+-(BOOL)checkTel:(NSString *) phoneNumber{
+    NSString *regex = @"^((13[0-9])|(147)|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+    BOOL isMatch = [pred evaluateWithObject:phoneNumber];
+    if (!isMatch) {
+        return NO;
+    }
+    return YES;
+}
+#pragma mark UITextFieldDelegate的实现方法
+/**
+ *  限制输入框的长度
+ */
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField == self.userAccount) {
+        //如果输入的手机号大于11
+        if (textField.text.length > 11) return NO;
+    }
+    return YES;
+}
+- (void)textFieldDidChange:(UITextField *)textField
+{
+    if (textField == self.userAccount) {
+        if (textField.text.length > 11) {
+            textField.text = [textField.text substringToIndex:11];
+        }
+    }
+}
+@end
